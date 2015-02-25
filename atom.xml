@@ -4,7 +4,7 @@
   <subtitle><![CDATA[To be a better web developer!]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.sunnyyan.com/"/>
-  <updated>2015-02-24T15:37:46.881Z</updated>
+  <updated>2015-02-25T07:25:27.497Z</updated>
   <id>http://blog.sunnyyan.com/</id>
   
   <author>
@@ -13,6 +13,27 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[手机端测试]]></title>
+    <link href="http://blog.sunnyyan.com/2015/02/25/Mobile-Test/"/>
+    <id>http://blog.sunnyyan.com/2015/02/25/Mobile-Test/</id>
+    <published>2015-02-25T15:17:34.000Z</published>
+    <updated>2015-02-25T07:25:02.052Z</updated>
+    <content type="html"><![CDATA[<p>手机端测试，该部分是用安卓app writeily编写，使用sgit上传，使用juicessh在手机端连接VPS编译的。</p>
+<p>去年的这个时候买了用于wordpress的建站空间和域名，但是没能好好维护，写的文章也屈指可数，实在是惭愧。到这个时候也到期了，另外在没有备份的情况下被我手误给全部清空了。年前买了个<a href="https://www.linode.com" target="_blank" rel="external">Linode</a>的vps，本想继续走wp路线，可不小心看到了<a href="http://hexo.io/" target="_blank" rel="external">hexo</a>这个静态博客系统，给人的感觉是非常酷，遂果断的使用了<a href="http://hexo.io/" target="_blank" rel="external">hexo</a>。经过年假的几天折腾，系统已经搭建好了。</p>
+<p>从事了2年多的web开发工作，虽然知识面变的比学生时代广多了，但是细数一下，没有自己很精通的部分。该是把之前的东西给沉淀以及进阶一下了，在<a href="http://blog.sunnyyan.com" target="_blank" rel="external">Blog</a>中以后会陆续写一些对自己前端知识的梳理总结，以及一些读书学习笔记。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>手机端测试，该部分是用安卓app writeily编写，使用sgit上传，使用juicessh在手机端连接VPS编译的。</p>
+<p>去年的这个时候买了用于wordpress的建站空间和域名，但是没能好好维护，写的文章也屈指可数，实在是惭愧。到这个时候也到期了，另外在没有]]>
+    </summary>
+    
+      <category term="随笔" scheme="http://blog.sunnyyan.com/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+      <category term="随笔" scheme="http://blog.sunnyyan.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[转到Hexo的第一次胡扯]]></title>

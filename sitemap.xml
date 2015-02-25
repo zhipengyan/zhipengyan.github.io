@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.sunnyyan.com/2015/02/25/Mobile-Test/</loc>
+    <lastmod>2015-02-25T07:25:02.052Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.sunnyyan.com/2015/02/24/hexo-first-post/</loc>
     <lastmod>2015-02-24T15:37:34.210Z</lastmod>
   </url>
