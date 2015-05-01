@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.sunnyyan.com/2015/05/01/hexo-auto-generate/</loc>
+    <lastmod>2015-05-01T11:58:54.629Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.sunnyyan.com/2015/03/19/div-vertical-align-center/</loc>
     <lastmod>2015-03-20T16:47:00.624Z</lastmod>
   </url>
@@ -19,11 +24,6 @@
   <url>
     <loc>http://blog.sunnyyan.com/tags/index.html</loc>
     <lastmod>2015-02-24T08:11:07.938Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://blog.sunnyyan.com/2015/02/09/hello-world/</loc>
-    <lastmod>2015-02-09T16:38:25.405Z</lastmod>
   </url>
   
 </urlset>
