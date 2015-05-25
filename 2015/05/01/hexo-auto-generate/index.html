@@ -9,7 +9,7 @@
     
     <meta name="author" content="Sunny Yan">
     
-    <meta name="description" content="hhhh">
+    <meta name="description" content="背景：买了vps后本想用wordpress搭个博客环境，但觉得wp太重了，最终选择了hexo静态博客系统。因为有了vps和域名，就不想托管在gitpages上了，不然也不去买vps和域名了。hexo本身是搭建在本地的，新建文章和发布文章都在本地操作，推送到git上面。我是直接搭建在vps上面的，这样">
     
     
     
@@ -81,7 +81,7 @@
     </p>
   <p class="article-time">
     <time datetime="2015-05-01T19:32:22.000Z" itemprop="datePublished">2015-05-01</time>
-    更新日期:<time datetime="2015-05-01T12:08:51.597Z" itemprop="dateModified">2015-05-01</time>
+    更新日期:<time datetime="2015-05-08T18:20:15.046Z" itemprop="dateModified">2015-05-08</time>
     
   </p>
 </header>
@@ -90,10 +90,27 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、实现手段"><span class="toc-number">1.</span> <span class="toc-text">一、实现手段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、在vps中搭建hexo"><span class="toc-number">2.</span> <span class="toc-text">二、在vps中搭建hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、将hexo文章目录托管到github远程仓库"><span class="toc-number">3.</span> <span class="toc-text">三、将hexo文章目录托管到github远程仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、为远程仓库添加webhooks"><span class="toc-number">4.</span> <span class="toc-text">四、为远程仓库添加webhooks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、为vps编写监听服务"><span class="toc-number">5.</span> <span class="toc-text">五、为vps编写监听服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用方法"><span class="toc-number">5.1.</span> <span class="toc-text">使用方法</span></a></li></ol></li></ol>
 		</div>
 		
-		<p>hhhh</p>
+		<blockquote>
+<p>背景：买了vps后本想用wordpress搭个博客环境，但觉得wp太重了，最终选择了hexo静态博客系统。因为有了vps和域名，就不想托管在gitpages上了，不然也不去买vps和域名了。hexo本身是搭建在本地的，新建文章和发布文章都在本地操作，推送到git上面。我是直接搭建在vps上面的，这样就不那么方便了，不能为了写个文章要ssh到vps上编辑，然后再发布吧。折中后我是将hexo的source目录作为git仓库托管在github上，本地用markdown写好文章后，推到github中，然后再远程vps在source目录中拉取文章，再使用vps上的hexo进行hexo generate。这样子看来发个文章也还是蛮拼的，如果本地写好文章推到github上后，能自动发布文章就好了。网络上搜索了一下解决方案，确实可以实现，大多方法是用python监听github发的webhooks请求，然哦胡去执行写好的shell脚本，因为想自己动手，所以就只能使用解决方案，不想用人家的代码，自己实现的才是最好（zuo）的。遂决定使用最近在学习的nodejs，也趁机做个练习，如果可能的话还可以集成到hexo中。</p>
+</blockquote>
+<h2 id="一、实现手段">一、实现手段</h2>
+<p>1.使用nodejs监听某个端口<br>2.hexo文章目录托管在github仓库中，设置webhooks（指向vps地址及1中所说的端口）<br>3.本地文章推送到远程仓库后，触发webhooks<br>4.nodejs监听的端口收到webhooks后，执行shell命令，进行hexo generate</p>
+<h2 id="二、在vps中搭建hexo">二、在vps中搭建hexo</h2>
+<p>估计看到这个文章的同学都是已经在本地或vps中搭建好了hexo的，所以这个搭建过程还是看其他的优秀文章或者看官方doc吧。</p>
+<h2 id="三、将hexo文章目录托管到github远程仓库">三、将hexo文章目录托管到github远程仓库</h2>
+<p>hexo的默认文章目录为source/_posts ，我认为后面有可能还会添加其他东西，索性就把整个source托管到远程仓库了。</p>
+<h2 id="四、为远程仓库添加webhooks">四、为远程仓库添加webhooks</h2>
+<p>打开托管hexo文章的github代码仓库页面，右边靠下点击settings，在下个页面中的Webhooks&amp;Services选项中AddWebhoooks，Payload Url为自己vps建立的监听地址，Secret中填写一个密码，这个主要是为了验证是github对Payload Url发出的请求，同时也有密码验证，在监听的时候可以使用该密钥进行验证。否则任何访问该地址都会让你的hexo执行发布，感觉还是不放心。</p>
+<h2 id="五、为vps编写监听服务">五、为vps编写监听服务</h2>
+<p>在写代码之前在网上看了下大家的解决方案，大多为使用python监听请求，然后去执行本地的shell脚本。我因为最近在学习nodejs，就想使用nodejs来实现，首先nodejs监听请求肯定是没问题的，问题是怎么去执行终端命令，本想也去写个shell让它来调用执行，后来发现了<a href="https://github.com/arturadib/shelljs" target="_blank" rel="external">shelljs</a>这个开源的项目，可以直接调用终端命令，索性就用这个了，也不用去写shell来调用了，直接代码中执行终端命令。我已经将我写好的代码放到github上去了，大家可以git clone直接使用<a href="https://github.com/zhipengyan/auto-publish-hexo" target="_blank" rel="external">（我的代码）</a>。写的比较简陋，可以发挥自己的闹洞进行修改完善。</p>
+<h3 id="使用方法">使用方法</h3>
+<p>1.</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> hexo安装路径</div><div class="line">git clone https://github.com/zhipengyan/auto-publish-hexo</div><div class="line"><span class="built_in">cd</span> auto-publish-hexo</div><div class="line">npm install</div></pre></td></tr></table></figure><br>2.打开目录下的config.json进行修改</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">     <span class="string">"time_zone"</span>: <span class="string">"Asia/Shanghai"</span>, <span class="comment">//所在时区，在log中显示时间了，vps一般不是本地时区</span></div><div class="line">     <span class="string">"webhook_secret"</span>: <span class="string">"your secret"</span>, <span class="comment">//github webhooks设置的secret</span></div><div class="line">     <span class="string">"nodejs_version"</span>: <span class="string">"0.12"</span>, <span class="comment">//使用的nodejs的版本</span></div><div class="line">     <span class="string">"path"</span>: { <span class="comment">//如果hexo的配置为默认的话不用修改下面的</span></div><div class="line">       <span class="string">"hexo_path"</span>: <span class="string">"../"</span>, <span class="comment">//hexo目录相对路径</span></div><div class="line">       <span class="string">"hexo_source_path"</span>: <span class="string">"../source"</span> <span class="comment">//hexo source目录的相对路径，也就是文章目录</span></div><div class="line">     },</div><div class="line">     <span class="string">"listen_port"</span>: <span class="number">8888</span> <span class="comment">//监听的端口</span></div><div class="line">}</div></pre></td></tr></table></figure><br>3.使用npm start或者node index.js运行</p>
+<p><a href="https://github.com/zhipengyan/auto-publish-hexo" target="_blank" rel="external">（我的代码）</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -143,7 +160,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、实现手段"><span class="toc-number">1.</span> <span class="toc-text">一、实现手段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、在vps中搭建hexo"><span class="toc-number">2.</span> <span class="toc-text">二、在vps中搭建hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、将hexo文章目录托管到github远程仓库"><span class="toc-number">3.</span> <span class="toc-text">三、将hexo文章目录托管到github远程仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、为远程仓库添加webhooks"><span class="toc-number">4.</span> <span class="toc-text">四、为远程仓库添加webhooks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、为vps编写监听服务"><span class="toc-number">5.</span> <span class="toc-text">五、为vps编写监听服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用方法"><span class="toc-number">5.1.</span> <span class="toc-text">使用方法</span></a></li></ol></li></ol>
   </div>
 
 <div id="asidepart">
@@ -342,6 +359,13 @@ $(document).ready(function(){
 </script> 
 
 
+
+
+
+<script type="text/javascript">
+	var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	document.write(unescape("%3Cspan style='display:none' id='cnzz_stat_icon_1254927630'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1254927630' type='text/javascript'%3E%3C/script%3E"));
+</script>
 
 
 
